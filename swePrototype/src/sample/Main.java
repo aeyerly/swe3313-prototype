@@ -7,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
@@ -51,7 +52,7 @@ public class Main extends Application {
         root.add(userEntry, 0, 1, 1, 1);
 
         //Password entry field
-        TextField passEntry = new TextField();
+        PasswordField passEntry = new PasswordField();
         root.add(passEntry, 1, 1, 1, 1);
 
         //Sign in button
