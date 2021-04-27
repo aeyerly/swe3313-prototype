@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.shape.*;
@@ -24,10 +25,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         String waiterTables[] = new String[5];
         waiterTables[0] = "0,0";
-        waiterTables[1] = "0,1";
-        waiterTables[2] = "0,2";
-        waiterTables[3] = "1,0";
-        waiterTables[4] = "1,1";
+        waiterTables[1] = "0,2";
+        waiterTables[2] = "2,0";
+        waiterTables[3] = "2,2";
+        waiterTables[4] = "3,1";
 
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("J's Corner Restaurant Prototype");
@@ -98,7 +99,31 @@ public class Main extends Application {
                 rectArray[i][j].setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
                 rectArray[i][j].setPrefHeight(150);
                 rectArray[i][j].setPrefWidth(150);
-                //rectArray[i][j].setStroke(Color.BLACK);
+                rectArray[i][j].setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent actionEvent) {
+                        System.out.println("table clicked");
+
+                        StackPane addOrderPane = new StackPane();
+                        addOrderPane.setPrefWidth(400);
+                        addOrderPane.setPrefHeight(400);
+                        addOrderPane.setLayoutX(640);
+                        addOrderPane.setLayoutY(320);
+
+                        Label seat1Label = new Label();
+                        seat1Label.setText("Seat 1 Order");
+
+                        Label seat2Label = new Label();
+                        seat2Label.setText("Seat 2 Order");
+
+                        Label seat3Label = new Label();
+                        seat3Label.setText("Seat 3 Order");
+
+                        Label seat4Label = new Label();
+                        seat4Label.setText("Seat 4 Order");
+
+                        root2.add(addOrderPane, 0, 6, 6, 1);
+                    }
+                });
                 root2.add(rectArray[i][j], j, i, 1, 1);
                 count++;
             }
@@ -109,7 +134,7 @@ public class Main extends Application {
             int waiterTableLocation[] = new int[2];
             waiterTableLocation[0] = Integer.parseInt(parsedTables[0]);
             waiterTableLocation[1] = Integer.parseInt(parsedTables[1]);
-            rectArray[waiterTableLocation[0]][waiterTableLocation[1]].setStyle("-fx-background-color: #00ff00; ");
+            rectArray[waiterTableLocation[0]][waiterTableLocation[1]].setStyle("-fx-background-color: #00ff00; -fx-border-color: #000000");
         }
 
 
