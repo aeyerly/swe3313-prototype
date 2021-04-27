@@ -1,0 +1,113 @@
+1,Appetizers,Chips & Dip (Pick 2),8.00
+2,Appetizers,Buffalo Blue Chips,6.00
+3,Appetizers,Chicken Nachos,8.50
+4,Appetizers,Pork Nachos,8.50
+5,Appetizers,Pork or Chicken Sliders (3),5.00
+6,Appetizers,Catfish Bites,6.50
+7,Appetizers,Fried Veggies,6.50
+8,Appetizers,Fried Cheese,7.50
+9,Appetizers,Cheesestick Trio,14.00
+10,Appetizers,Chicken Quesadilla,7.50
+11,Appetizers,Cast Iron Skillet Meatballs,12.00
+12,Appetizers,Wings,0.00
+13,Salads,House Salad (Side),5.00
+14,Salads,House Salad (Main),7.50
+15,Salads,Wedge Salad,7.50
+16,Salads,Caesar Salad (Side),5.00
+17,Salads,Caesar Salad (Main),7.50
+18,Salads,Sweet Potato Chicken Salad,11.50
+19,Salads (Toppings),Avocado,1.00
+20,Salads (Toppings),Roasted or Captain Crunch Chicken,3.00
+21,Salads (Toppings),Portobello Mushroom Cap,4.00
+22,Salads (Toppings),Grilled or Fried Shrimp,6.00
+23,Salads (Toppings),New York Strip,6.00
+24,Salads (Toppings),Seared Tuna,10.00
+25,All entrees served with 2 sides,Shrimp & Grits,13.50
+26,All entrees served with 2 sides,Sweet Tea Fried Chicken,11.50
+27,All entrees served with 2 sides,Caribbean Chicken,11.50
+28,All entrees served with 2 sides,Grilled Pork Chops,11.00
+29,All entrees served with 2 sides,12oz New York Strike Steak,17.00
+30,All entrees served with 2 sides,Seared Tuna,15.00
+31,J's Favorites,Captain Crunch Chicken Tenders,11.50
+32,J's Favorites,Shock Top Grouper Fingers,11.50
+33,J's Favorites,Mac & Cheese Bar,8.50
+34,J's Favorites (Toppings),Pepper Jack Cheese,0.00
+35,J's Favorites (Toppings),Cheddar Cheese,0.00
+36,J's Favorites (Toppings),Swiss Cheese,0.00
+37,J's Favorites (Toppings),Mozzarella Cheese,0.00
+38,J's Favorites (Toppings),Goat Cheese,0.00
+39,J's Favorites (Toppings),Bacon,0.50
+40,J's Favorites (Toppings),Broccoli,0.50
+41,J's Favorites (Toppings),Mushrooms,0.50
+42,J's Favorites (Toppings),Grilled Onions,0.50
+43,J's Favorites (Toppings),Jalapenos,0.50
+44,J's Favorites (Toppings),Spinach,0.50
+45,J's Favorites (Toppings),Tomatoes,0.50
+46,J's Favorites (Toppings),Captain Crunch Chicken,3.00
+47,J's Favorites (Toppings),Roasted Chicken,3.00
+48,J's Favorites (Toppings),Pulled Pork,3.00
+49,J's Favorites (Toppings),New York Strip,6.00
+50,J's Favorites (Toppings),Grilled Shrimp,6.00
+51,J's Favorites (Toppings),Fried Shrimp,6.00
+52,J's Favorites (Toppings),Black Forest Ham,2.50
+53,J's Favorites (Toppings),Sliced Turkey Breast,2.50
+54,Sides,Curly Fries,0.00
+55,Sides,Wing Chips,0.00
+56,Sides,Sweet Potato Fries,1.50
+57,Sides,Creamy Cabbage Slaw,0.00
+58,Sides,Adluh Cheese Grits,0.00
+59,Sides,Mashed Potatoes,0.00
+60,Sides,Mac & Cheese,0.00
+61,Sides,Spicy Mac & Cheese,0.00
+62,Sides,Bacon Mac & Cheese,0.00
+63,Sides,Broccoli,0.00
+64,Sides,Seasonal Vegetables,0.00
+65,Sides,Baked Beans,0.00
+66,Sides,Fried Okra,1.50
+67,Sides,Substitute Soup or Side Salad for Side,2.50
+68,Sides (Separate),Curly Fries,2.50
+69,Sides (Separate),Wing Chips,2.50
+70,Sides (Separate),Sweet Potato Fries,4.50
+71,Sides (Separate),Creamy Cabbage Slaw,2.50
+72,Sides (Separate),Adluh Cheese Grits,2.50
+73,Sides (Separate),Mashed Potatoes,2.50
+74,Sides (Separate),Mac & Cheese,2.50
+75,Sides (Separate),Spicy Mac & Cheese,2.50
+76,Sides (Separate),Bacon Mac & Cheese,2.50
+77,Sides (Separate),Broccoli,2.50
+78,Sides (Separate),Seasonal Vegetables,2.50
+79,Sides (Separate),Baked Beans,2.50
+80,Sides (Separate),Fried Okra,4.00
+81,Sandwiches,Grilled Cheese,5.50
+82,Sandwiches,100% Beef Hot Dog,5.50
+83,Sandwiches,Chicken BLT&A,10.00
+84,Sandwiches,Cordon Bleu,11.00
+85,Sandwiches,Philly,13.50
+86,Sandwiches,Pulled Pork,9.50
+87,Sandwiches,Club,10.00
+88,Sandwiches,Meatball Sub,10.00
+89,Sandwiches,Po Boy,11.50
+90,Wraps,Club,10.00
+91,Wraps,Chicken BLT&A,10.00
+92,Wraps,Veggie,10.00
+93,Wraps,Chicken Caesar,10.00
+94,Burgers,J's Burger,10.00
+95,Burgers,Bacon Cheeseburger,11.00
+96,Burgers,Mushroom Swiss Burger,11.00
+97,Burgers,Carolina Burger,11.00
+98,Burgers,Portobello Burger (V),8.50
+99,Burgers,Vegan Boca Burger (V),10.50
+100,Beverages,Coffee,2.00
+101,Beverages,Sweet Tea,2.00
+102,Beverages,Unsweet Tea,2.00
+103,Beverages,Coke,2.00
+104,Beverages,Diet Coke,2.00
+105,Beverages,Sprite,2.00
+106,Beverages,Mr. Pibb,2.00
+107,Beverages,Ginger Ale,2.00
+108,Beverages,Barq's Root Beer (Can),2.00
+109,Beverages,Bottled Water,2.00
+110,Beverages,Lemonade,2.00
+111,Beverages,Milk,2.00
+112,Beverages,Chocolate Milk,2.00
+113,Beverages,Orange Juice,2.00
