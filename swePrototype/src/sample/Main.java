@@ -110,7 +110,7 @@ public class Main extends Application {
     public boolean signIn(String username, String password) {
         try {
             //replace this string with filepath on your computer
-            String filepath = "C:\\Users\\Alex\\Desktop\\swePrototype\\src\\sample\\loginInfo.txt";
+            String filepath = "../../../src/sample/loginInfo.txt";
             File employeeInfo = new File(filepath);
             Scanner scan = new Scanner(employeeInfo);
 
