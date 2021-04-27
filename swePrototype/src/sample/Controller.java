@@ -35,7 +35,16 @@ public class Controller {
     private Label errorLabel;
 
     @FXML
-    void signIn(ActionEvent event) {
+    void signIn(ActionEvent event)throws IOException {
+        
+        Parent sample1_page_parent = (Parent) FXMLLoader.load(this.getClass().getResource("sample1.fxml"));
+        Scene sample1_page_scene = new Scene(sample1_page_parent);
+        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        app_stage.hide();
+        app_stage.setScene(home_page_scene);
+        app_stage.show();
+        
         String username = usernameEntry.getText();
         String password = passwordEntry.getText();
 
