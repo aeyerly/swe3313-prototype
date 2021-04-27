@@ -1,4 +1,4 @@
-package sample;
+package prototype;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -24,10 +24,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         String waiterTables[] = new String[5];
         waiterTables[0] = "0,0";
-        waiterTables[1] = "0,2";
-        waiterTables[2] = "2,0";
-        waiterTables[3] = "2,2";
-        waiterTables[4] = "3,1";
+        waiterTables[1] = "0,1";
+        waiterTables[2] = "0,2";
+        waiterTables[3] = "1,0";
+        waiterTables[4] = "1,1";
 
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("J's Corner Restaurant Prototype");
