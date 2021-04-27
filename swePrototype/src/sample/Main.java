@@ -7,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
@@ -51,7 +52,7 @@ public class Main extends Application {
         root.add(userEntry, 0, 1, 1, 1);
 
         //Password entry field
-        TextField passEntry = new TextField();
+        PasswordField passEntry = new PasswordField();
         root.add(passEntry, 1, 1, 1, 1);
 
         //Sign in button
@@ -110,7 +111,7 @@ public class Main extends Application {
     public boolean signIn(String username, String password) {
         try {
             //replace this string with filepath on your computer
-            String filepath = "C:\\Users\\Alex\\Desktop\\swePrototype\\src\\sample\\loginInfo.txt";
+            String filepath = "../../../src/sample/loginInfo.txt";
             File employeeInfo = new File(filepath);
             Scanner scan = new Scanner(employeeInfo);
 
