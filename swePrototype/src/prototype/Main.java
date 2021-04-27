@@ -1,4 +1,4 @@
-package prototype;
+package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -7,7 +7,6 @@ import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
@@ -23,6 +22,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        String waiterTables[] = new String[5];
+        waiterTables[0] = "0,0";
+        waiterTables[1] = "0,2";
+        waiterTables[2] = "2,0";
+        waiterTables[3] = "2,2";
+        waiterTables[4] = "3,1";
+
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("J's Corner Restaurant Prototype");
 
@@ -52,7 +58,7 @@ public class Main extends Application {
         root.add(userEntry, 0, 1, 1, 1);
 
         //Password entry field
-        PasswordField passEntry = new PasswordField();
+        TextField passEntry = new TextField();
         root.add(passEntry, 1, 1, 1, 1);
 
         //Sign in button
@@ -79,30 +85,35 @@ public class Main extends Application {
         root2.setHgap(10);
         root2.setVgap(10);
 
-        /*Rectangle rect1 = new Rectangle(0, 0, 80,80);
-        rect1.setFill(Color.WHITE);
-        rect1.setStroke(Color.BLACK);
-        root2.add(rect1, 0, 0, 1, 1);*/
 
         Line divider = new Line(0, 0, 0, 960);
         root2.add(divider, 6, 0, 1, 6);
 
-        Rectangle rectArray[][] = new Rectangle[5][6];
+        Button rectArray[][] = new Button[5][6];
+        int count = 1;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
-                rectArray[i][j] = new Rectangle(0, 0, 150, 150);
-                rectArray[i][j].setFill(Color.WHITE);
-                rectArray[i][j].setStroke(Color.BLACK);
-                root2.add(rectArray[i][j], i, j, 1, 1);
+
+                rectArray[i][j] = new Button(String.valueOf(count));
+                rectArray[i][j].setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+                rectArray[i][j].setPrefHeight(150);
+                rectArray[i][j].setPrefWidth(150);
+                //rectArray[i][j].setStroke(Color.BLACK);
+                root2.add(rectArray[i][j], j, i, 1, 1);
+                count++;
             }
         }
 
-       /* Rectangle rect2 = new Rectangle(0, 0, 80,80);
-        rect2.setFill(Color.WHITE);
-        rect2.setStroke(Color.BLACK);
-        root2.add(rect2, 1, 0, 1, 1);*/
+        for (int i = 0; i < waiterTables.length; i++) {
+            String parsedTables[] = waiterTables[i].split(",");
+            int waiterTableLocation[] = new int[2];
+            waiterTableLocation[0] = Integer.parseInt(parsedTables[0]);
+            waiterTableLocation[1] = Integer.parseInt(parsedTables[1]);
+            rectArray[waiterTableLocation[0]][waiterTableLocation[1]].setStyle("-fx-background-color: #00ff00; ");
+        }
 
-        primaryStage.setScene(new Scene(root, 320, 240));
+
+        primaryStage.setScene(new Scene(root2, 1280, 960));
         primaryStage.show();
 
     }
@@ -111,7 +122,7 @@ public class Main extends Application {
     public boolean signIn(String username, String password) {
         try {
             //replace this string with filepath on your computer
-            String filepath = "../../../src/sample/loginInfo.txt";
+            String filepath = "C:\\Users\\Alex\\Desktop\\swePrototype\\src\\sample\\loginInfo.txt";
             File employeeInfo = new File(filepath);
             Scanner scan = new Scanner(employeeInfo);
 
