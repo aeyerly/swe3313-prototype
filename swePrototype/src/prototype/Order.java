@@ -1,3 +1,5 @@
+package prototype;
+
 import java.util.ArrayList;
 
 public class Order
@@ -16,7 +18,7 @@ public class Order
 
     public int getTotal() {
         total = 0;
-        foreach(MenuItem item : items)
+        for (MenuItem item : items)
         {
             total += item.getCost();
         }

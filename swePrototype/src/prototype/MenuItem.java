@@ -1,3 +1,5 @@
+package prototype;
+
 public class MenuItem
 {
     private int id, cost;

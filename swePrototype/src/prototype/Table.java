@@ -1,9 +1,11 @@
+package prototype;
+
 public class Table
 {
 
     //Status [0 - Open] [1 - Occupied] [2 - Dirty]
     private int number, status;
-    private Order[4] orders;
+    private Order[] orders = new Order[4];
 
     public Table(int number, int status) {
         this.number = number;
@@ -18,19 +20,19 @@ public class Table
         return number;
     }
 
-    public getOrder(int index) {
+    public Order getOrder(int index) {
         return orders[index];
     }
 
-    public setStatus(int newStatus) {
+    public void setStatus(int newStatus) {
          status = newStatus;
     }
 
-    public setNumber(int newNumber) {
+    public void setNumber(int newNumber) {
         number = newNumber;
     }
 
-    public setOrder(int index, Order newOrder) {
+    public void setOrder(int index, Order newOrder) {
         orders[index] = newOrder;
     }
 
