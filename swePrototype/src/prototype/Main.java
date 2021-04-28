@@ -1,18 +1,17 @@
-package prototype;
-
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -56,6 +55,8 @@ public class Main extends Application {
 
         //Main application root
         GridPane mainPane = new GridPane();
+
+
 
 
         loginPane.setPadding(new Insets(10, 10, 10, 10));
@@ -126,23 +127,23 @@ public class Main extends Application {
 
         seat1Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(0);
+                addOrderButton(0, primaryStage);
             }
         });
         seat2Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(1);
+                addOrderButton(1, primaryStage);
             }
         });
         seat3Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(2);
+                addOrderButton(2, primaryStage);
 
             }
         });
         seat4Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(3);
+                addOrderButton(3, primaryStage);
             }
         });
 
@@ -207,6 +208,8 @@ public class Main extends Application {
             }
         }
 
+
+
         primaryStage.setScene(new Scene(loginPane, 360, 100));
         //primaryStage.setScene(new Scene(mainPane, 1280, 960));
         primaryStage.show();
@@ -231,8 +234,8 @@ public class Main extends Application {
 
                 //If username and password are the same, login is set to valid
                 if (username.equals(login[0]) && password.equals(login[1])) {
-                        validLogin = true;
-                        break;
+                    validLogin = true;
+                    break;
                 }
             }
             if (validLogin) {
@@ -251,16 +254,112 @@ public class Main extends Application {
         return false;
     }
 
-    public void addOrderButton(int seat)
+    public void addOrderButton(int seat,  Stage primaryStage)
     {
         int tableNumber = Integer.parseInt(tableLabel.getText().split(" ")[1]);
-        tables[tableNumber].setOrder(seat, takeOrder());
+        tables[tableNumber].setOrder(seat, takeOrder(primaryStage));
         updateTableStatus(tableNumber);
     }
 
-    public Order takeOrder() {
+    public Order takeOrder(Stage primaryStage) {
+        GridPane menuPane = new GridPane();
+        final ToggleGroup categoryGroup = new ToggleGroup();
+        final String[] selectedValue = new String[1];
+        final VBox itemList = new VBox();
+
+
+        Label categoryLabel = new Label();
+        categoryLabel.setText("Categories:");
+        menuPane.add(categoryLabel, 0, 0, 1, 1);
+
+        RadioButton appetizerButton = new RadioButton();
+        appetizerButton.setText("Appetizers");
+        appetizerButton.setToggleGroup(categoryGroup);
+        appetizerButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                selectedValue[0] = selected.getText();
+                System.out.println(selectedValue[0]);
+                itemList.getChildren().clear();
+                updateCategoryList(selectedValue[0], itemList);
+            }
+        });
+        menuPane.add(appetizerButton, 0, 1, 1, 1);
+
+        RadioButton saladButton = new RadioButton();
+        saladButton.setText("Salads");
+        saladButton.setToggleGroup(categoryGroup);
+        saladButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                selectedValue[0] = selected.getText();
+                System.out.println(selectedValue[0]);
+                itemList.getChildren().clear();
+                updateCategoryList(selectedValue[0], itemList);
+            }
+        });
+        menuPane.add(saladButton, 0, 2, 1, 1);
+
+        RadioButton entreeButton = new RadioButton();
+        entreeButton.setText("Entrees");
+        entreeButton.setToggleGroup(categoryGroup);
+        entreeButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                selectedValue[0] = selected.getText();
+                System.out.println(selectedValue[0]);
+                itemList.getChildren().clear();
+                updateCategoryList(selectedValue[0], itemList);
+            }
+        });
+        menuPane.add(entreeButton, 0, 3, 1, 1);
+
+        RadioButton sidesButton = new RadioButton();
+        sidesButton.setToggleGroup(categoryGroup);
+        sidesButton.setText("Sides");
+        sidesButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                selectedValue[0] = selected.getText();
+                System.out.println(selectedValue[0]);
+                itemList.getChildren().clear();
+                updateCategoryList(selectedValue[0], itemList);
+            }
+        });
+        menuPane.add(sidesButton, 0, 4, 1, 1);
+
+        RadioButton sandwichButton = new RadioButton();
+        sandwichButton.setText("Sandwiches");
+        sandwichButton.setToggleGroup(categoryGroup);
+        sandwichButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                selectedValue[0] = selected.getText();
+                System.out.println(selectedValue[0]);
+                itemList.getChildren().clear();
+                updateCategoryList(selectedValue[0], itemList);
+            }
+        });
+        menuPane.add(sandwichButton, 0, 5, 1, 1);
+
+        RadioButton burgerButton = new RadioButton();
+        burgerButton.setText("Burgers");
+        burgerButton.setToggleGroup(categoryGroup);
+        burgerButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                selectedValue[0] = selected.getText();
+                System.out.println(selectedValue[0]);
+                itemList.getChildren().clear();
+                updateCategoryList(selectedValue[0], itemList);
+            }
+        });
+        menuPane.add(burgerButton, 0, 6, 1, 1);
+
+        menuPane.add(itemList, 1, 0, 1, 8);
         Order order = new Order();
         //Take the order
+        primaryStage.setScene(new Scene(menuPane, 400, 400));
         order.addItem(15);
         return order;
     }
@@ -276,6 +375,25 @@ public class Main extends Application {
         seat2Label.setText("Seat 2 Order: " + (orders[1] != null ? orders[1] : ""));
         seat3Label.setText("Seat 3 Order: " + (orders[2] != null ? orders[2] : ""));
         seat4Label.setText("Seat 4 Order: " + (orders[3] != null ? orders[3] : ""));
+    }
+
+    public void updateCategoryList(String selected, VBox itemList) {
+        ToggleGroup items = new ToggleGroup();
+        
+        try {
+            File menu = new File("../../../src/prototype/menu.csv");
+            Scanner scan = new Scanner(menu);
+            while (scan.hasNextLine()) {
+                String[] data = scan.nextLine().split(",");
+                if (data[1].equals(selected)) {
+                    RadioButton temp = new RadioButton(data[2]);
+                    temp.setToggleGroup(items);
+                    itemList.getChildren().add(temp);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void assignTables() {
