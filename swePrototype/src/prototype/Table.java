@@ -25,14 +25,17 @@ public class Table
     }
 
     public void setStatus(int newStatus) {
-         status = newStatus;
+
+        status = newStatus;
     }
 
     public void setNumber(int newNumber) {
+
         number = newNumber;
     }
 
     public void setOrder(int index, Order newOrder) {
+
         orders[index] = newOrder;
     }
 

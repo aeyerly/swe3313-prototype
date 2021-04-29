@@ -1,21 +1,23 @@
 package prototype;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class Main extends Application {
 
@@ -29,6 +31,12 @@ public class Main extends Application {
     Button seat3Button = new Button();
     Button seat4Button = new Button();
 
+    //Login screen root
+    GridPane loginPane = new GridPane();
+
+    //Main application root
+    GridPane mainPane = new GridPane();
+
     Button tableButtons[][] = new Button[5][6];
 
     Table[] tables = new Table[30];
@@ -40,22 +48,8 @@ public class Main extends Application {
         for (int i = 0; i < 30; i++)
             tables[i] = new Table(i, 0);
 
-        String waiterTables[] = new String[5];
-        waiterTables[0] = "0,0";
-        waiterTables[1] = "0,2";
-        waiterTables[2] = "2,0";
-        waiterTables[3] = "2,2";
-        waiterTables[4] = "3,1";
-
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("J's Corner Restaurant Prototype");
 
-
-        //Login screen root
-        GridPane loginPane = new GridPane();
-
-        //Main application root
-        GridPane mainPane = new GridPane();
 
 
         loginPane.setPadding(new Insets(10, 10, 10, 10));
@@ -93,9 +87,8 @@ public class Main extends Application {
                 boolean validAttempt = signIn(username, passEntry.getText());
 
                 if(validAttempt) {
-                    System.out.println("Logged in as " + username);
                     assignTables();
-                    primaryStage.setScene(new Scene(mainPane, 1280, 960));
+                    primaryStage.setScene(new Scene(mainPane, 1280, 980));
                     primaryStage.show();
                 }
 
@@ -112,8 +105,6 @@ public class Main extends Application {
         addOrderPane.setLayoutX(640);
         addOrderPane.setLayoutY(320);
 
-
-
         tableLabel.setText("Table");
         seat1Label.setText("Seat 1 Order");
         seat2Label.setText("Seat 2 Order");
@@ -126,23 +117,23 @@ public class Main extends Application {
 
         seat1Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(0);
+                addOrderButton(0, primaryStage);
             }
         });
         seat2Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(1);
+                addOrderButton(1, primaryStage);
             }
         });
         seat3Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(2);
+                addOrderButton(2, primaryStage);
 
             }
         });
         seat4Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                addOrderButton(3);
+                addOrderButton(3, primaryStage);
             }
         });
 
@@ -168,7 +159,6 @@ public class Main extends Application {
 
         mainPane.add(addOrderPane, 0, 6, 6, 1);
 
-
         loginPane.setVgap(5);
         loginPane.setHgap(5);
         mainPane.setHgap(10);
@@ -179,46 +169,17 @@ public class Main extends Application {
         Line divider = new Line(0, 0, 0, 960);
         mainPane.add(divider, 6, 0, 1, 6);
 
-        int count = 0;
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 6; j++) {
 
-                tableButtons[i][j] = new Button(String.valueOf(count));
-                tableButtons[i][j].setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
-                tableButtons[i][j].setPrefHeight(150);
-                tableButtons[i][j].setPrefWidth(150);
-                int number = i * 6 + j;
-                tableButtons[i][j].setOnAction(new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent actionEvent) {
-                        updateTableStatus(number);
-                        tableLabel.setVisible(true);
-                        seat1Label.setVisible(true);
-                        seat2Label.setVisible(true);
-                        seat3Label.setVisible(true);
-                        seat4Label.setVisible(true);
-                        seat1Button.setVisible(true);
-                        seat2Button.setVisible(true);
-                        seat3Button.setVisible(true);
-                        seat4Button.setVisible(true);
-                    }
-                });
-                mainPane.add(tableButtons[i][j], j, i, 1, 1);
-                count++;
-            }
-        }
 
         primaryStage.setScene(new Scene(loginPane, 360, 100));
         //primaryStage.setScene(new Scene(mainPane, 1280, 960));
         primaryStage.show();
-
     }
 
     //Method to authenticate username and password
     public boolean signIn(String username, String password) {
         try {
-            //replace this string with filepath on your computer
-            String filepath = "../../../src/prototype/users.csv";
-            File userDB = new File(filepath);
+            File userDB = new File("../../../src/prototype/users.csv");
             Scanner scan = new Scanner(userDB);
 
             //Keeps track of if a login matches a stored value
@@ -231,8 +192,8 @@ public class Main extends Application {
 
                 //If username and password are the same, login is set to valid
                 if (username.equals(login[0]) && password.equals(login[1])) {
-                        validLogin = true;
-                        break;
+                    validLogin = true;
+                    break;
                 }
             }
             if (validLogin) {
@@ -251,17 +212,95 @@ public class Main extends Application {
         return false;
     }
 
-    public void addOrderButton(int seat)
+    public void addOrderButton(int seat,  Stage primaryStage)
     {
         int tableNumber = Integer.parseInt(tableLabel.getText().split(" ")[1]);
-        tables[tableNumber].setOrder(seat, takeOrder());
+        tables[tableNumber].setOrder(seat, takeOrder(primaryStage));
         updateTableStatus(tableNumber);
     }
 
-    public Order takeOrder() {
+    public Order takeOrder(Stage primaryStage) {
+
         Order order = new Order();
+        Stage orderPopup = new Stage();
+
+        orderPopup.initModality(Modality.APPLICATION_MODAL);
+        orderPopup.setTitle("Select item");
+
+        GridPane menuPane = new GridPane();
+        menuPane.setVgap(2);
+        VBox itemList = new VBox();
+        itemList.setSpacing(2);
+
+        final ToggleGroup categoryGroup = new ToggleGroup();
+        final String[] selectedValue = new String[1];
+        ArrayList<String> categories = new ArrayList<String>();
+
+        try {
+                File menuDB = new File("../../../src/prototype/menu.csv");
+                Scanner scan = new Scanner(menuDB);
+
+                while (scan.hasNextLine()) {
+                    String data = scan.nextLine();
+                    String[] item = data.split(",");
+                    if (!(categories.contains(item[1]))) categories.add(item[1]);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        Label categoryLabel = new Label();
+        categoryLabel.setText("Categories:");
+        menuPane.add(categoryLabel, 0, 0, 1, 1);
+
+        for (int i = 0; i < categories.size(); i ++) {
+            RadioButton categoryButton = new RadioButton();
+            categoryButton.setText(categories.get(i));
+            categoryButton.setToggleGroup(categoryGroup);
+            categoryButton.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent actionEvent) {
+                    RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
+                    selectedValue[0] = selected.getText();
+                    itemList.getChildren().clear();
+                    updateCategoryList(selectedValue[0], itemList);
+                }
+            });
+            menuPane.add(categoryButton, 0, i + 1, 1, 1);
+        }
+
+        menuPane.add(itemList, 1, 0, 1, categories.size() + 2);
+
+        Button confirm = new Button();
+        confirm.setText("Confirm");
+        confirm.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+
+                /*try {
+                    File menuDB = new File("../../../src/prototype/menu.csv");
+                    Scanner scan = new Scanner(menuDB);
+
+                    int line = 1;
+                    while (scan.hasNextLine()) {
+                        String data = scan.nextLine();
+                        if (line.contains()) {
+                            String[] item = data.split(",");
+                            id = item[0];
+                            break;
+                        } else line++;
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }*/
+
+                order.addItem(14);
+                orderPopup.close();
+            }
+        });
+        menuPane.add(confirm, 1, categories.size() + 2, 1, 1);
+
         //Take the order
-        order.addItem(15);
+        orderPopup.setScene(new Scene(menuPane, 510, 400));
+        orderPopup.showAndWait();
         return order;
     }
 
@@ -278,7 +317,42 @@ public class Main extends Application {
         seat4Label.setText("Seat 4 Order: " + (orders[3] != null ? orders[3] : ""));
     }
 
+    public void updateCategoryList(String selected, VBox itemList) {
+        ToggleGroup items = new ToggleGroup();
+        
+        try {
+            File menu = new File("../../../src/prototype/menu.csv");
+            Scanner scan = new Scanner(menu);
+            while (scan.hasNextLine()) {
+                String[] data = scan.nextLine().split(",");
+                if (data[1].equals(selected)) {
+                    RadioButton temp = new RadioButton(data[2] + " ($" + data[3] + ")");
+                    temp.setToggleGroup(items);
+                    itemList.getChildren().add(temp);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void assignTables() {
+
+        int count = 0;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 6; j++) {
+
+                tableButtons[i][j] = new Button(String.valueOf(count));
+                tableButtons[i][j].setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+                tableButtons[i][j].setDisable(true);
+                tableButtons[i][j].setPrefHeight(150);
+                tableButtons[i][j].setPrefWidth(150);
+
+                mainPane.add(tableButtons[i][j], j, i, 1, 1);
+                count++;
+            }
+        }
+
         try {
             String filepath = "../../../src/prototype/tables.csv";
             File tableDB = new File(filepath);
@@ -286,9 +360,29 @@ public class Main extends Application {
             while (scan.hasNextLine()) {
                 String data = scan.nextLine();
                 String[] assignment = data.split(",");
-                if (assignment[0].equals(username))
-                    tableButtons[Integer.parseInt(assignment[1])][Integer.parseInt(assignment[2])]
+                if (assignment[0].equals(username)) {
+                    int x = Integer.parseInt(assignment[1]);
+                    int y = Integer.parseInt(assignment[2]);
+                    tableButtons[x][y]
                             .setStyle("-fx-background-color: #00ff00; -fx-border-color: #000000");
+                    tableButtons[x][y]
+                            .setDisable(false);
+                    int number = x * 6 + y;
+                    tableButtons[x][y].setOnAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent actionEvent) {
+                            updateTableStatus(number);
+                            tableLabel.setVisible(true);
+                            seat1Label.setVisible(true);
+                            seat2Label.setVisible(true);
+                            seat3Label.setVisible(true);
+                            seat4Label.setVisible(true);
+                            seat1Button.setVisible(true);
+                            seat2Button.setVisible(true);
+                            seat3Button.setVisible(true);
+                            seat4Button.setVisible(true);
+                        }
+                    });
+                }
 
             }
         } catch (FileNotFoundException e) {

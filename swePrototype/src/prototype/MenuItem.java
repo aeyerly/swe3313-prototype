@@ -17,8 +17,7 @@ public class MenuItem
 
     public void lookupInfo(int id) {
         try {
-                String filepath = "../../../src/prototype/menu.csv";
-                File menuDB = new File(filepath);
+                File menuDB = new File("../../../src/prototype/menu.csv");
                 Scanner scan = new Scanner(menuDB);
 
                 int line = 1;
