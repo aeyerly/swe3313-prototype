@@ -30,7 +30,7 @@ public class MenuItem
      */
     public void lookupInfo(int id) {
         try {
-                File menuDB = new File("../../../src/prototype/menu.csv");
+                File menuDB = new File("./data/menu.csv");
                 Scanner scan = new Scanner(menuDB);
 
                 int line = 1;
