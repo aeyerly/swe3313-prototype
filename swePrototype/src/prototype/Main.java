@@ -261,7 +261,7 @@ public class Main extends Application {
      */
     public boolean signIn(String username, String password) {
         try {
-                File userDB = new File("../../../src/prototype/users.csv");
+                File userDB = new File("./data/users.csv");
                 Scanner scan = new Scanner(userDB);
 
                 //Keeps track of if a login matches a stored value
@@ -333,7 +333,7 @@ public class Main extends Application {
         ArrayList<String> categories = new ArrayList<String>();
 
         try {
-                File menuDB = new File("../../../src/prototype/menu.csv");
+                File menuDB = new File("./data/menu.csv");
                 Scanner scan = new Scanner(menuDB);
 
                 while (scan.hasNextLine()) {
@@ -372,7 +372,7 @@ public class Main extends Application {
         confirm.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 try {
-                    File menuDB = new File("../../../src/prototype/menu.csv");
+                    File menuDB = new File("./data/menu.csv");
                     Scanner scan = new Scanner(menuDB);
 
                     RadioButton selected = (RadioButton) itemsGroup.getSelectedToggle();
@@ -429,7 +429,7 @@ public class Main extends Application {
      */
     public void updateCategoryList(ToggleGroup itemsGroup, String selected, VBox itemList) {
         try {
-                File menu = new File("../../../src/prototype/menu.csv");
+                File menu = new File("./data/menu.csv");
                 Scanner scan = new Scanner(menu);
                 while (scan.hasNextLine()) {
                     String[] data = scan.nextLine().split(",");
@@ -466,7 +466,7 @@ public class Main extends Application {
         }
 
         try {
-            String filepath = "../../../src/prototype/tables.csv";
+            String filepath = "./data/tables.csv";
             File tableDB = new File(filepath);
             Scanner scan = new Scanner(tableDB);
             while (scan.hasNextLine()) {
