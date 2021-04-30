@@ -5,15 +5,18 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
@@ -30,18 +33,25 @@ public class Main extends Application {
     GridPane loginPane = new GridPane();
     GridPane mainPane = new GridPane();
     VBox queuePane = new VBox();
+    HBox labelPane = new HBox();
+    HBox logoutPane = new HBox();
 
+    ChoiceBox<String> statusChoiceBox = new ChoiceBox<String>();
+
+    Label usernameLabel = new Label();
     Label tableLabel = new Label();
     Label seat1Label = new Label();
     Label seat2Label = new Label();
     Label seat3Label = new Label();
     Label seat4Label = new Label();
+
     Button seat1Button = new Button();
     Button seat2Button = new Button();
     Button seat3Button = new Button();
     Button seat4Button = new Button();
 
     Button tableButtons[][] = new Button[5][6];
+    String[] statuses = {"Open", "Occupied", "Dirty"};
 
     Table[] tables = new Table[30];
     private String username; // Username of the user logged in
@@ -53,29 +63,27 @@ public class Main extends Application {
             tables[i] = new Table(i, 0);
 
         primaryStage.setTitle("J's Corner Restaurant Prototype");
+        primaryStage.centerOnScreen();
+        primaryStage.setOnCloseRequest(e -> Platform.exit());
 
+        mainPane.setPadding(new Insets(10, 10, 10, 10));
         loginPane.setPadding(new Insets(10, 10, 10, 10));
 
-        //Username label
         Label userLabel = new Label();
         userLabel.setText("Username");
         loginPane.add(userLabel,0, 0, 1, 1);
 
-        //Password label
         Label passLabel = new Label();
         passLabel.setText("Password");
         loginPane.add(passLabel,1, 0, 1, 1);
 
-        //Label for incorrect password
         Label errorLabel = new Label();
         errorLabel.setText("");
         loginPane.add(errorLabel, 1, 3, 1, 1);
 
-        //Username entry field
         TextField userEntry = new TextField();
         loginPane.add(userEntry, 0, 1, 1, 1);
 
-        //Password entry field
         PasswordField passEntry = new PasswordField();
         loginPane.add(passEntry, 1, 1, 1, 1);
 
@@ -89,8 +97,9 @@ public class Main extends Application {
                 // Attempt login
                 if(signIn(username, passEntry.getText())) {
                     assignTables();
-                    primaryStage.setScene(new Scene(mainPane, 1280, 980));
+                    primaryStage.setScene(new Scene(mainPane, 1200, 980));
                     primaryStage.show();
+                    primaryStage.centerOnScreen();
                 } else {
                     errorLabel.setText("Incorrect login");
                 }
@@ -99,15 +108,59 @@ public class Main extends Application {
         loginPane.add(signIn, 0, 3, 1, 1);
 
         GridPane addOrderPane = new GridPane();
-        addOrderPane.setPrefWidth(400);
-        addOrderPane.setPrefHeight(400);
-        addOrderPane.setLayoutX(640);
-        addOrderPane.setLayoutY(320);
+        addOrderPane.setPrefWidth(0);
+        addOrderPane.setPrefHeight(0);
+        addOrderPane.setLayoutX(0);
+        addOrderPane.setLayoutY(0);
 
+        statusChoiceBox.getItems().addAll("Open", "Occupied", "Dirty");
         seat1Button.setText("Add");
         seat2Button.setText("Add");
         seat3Button.setText("Add");
         seat4Button.setText("Add");
+
+        // Update table status when changed in the choice box
+        statusChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue observable, Number value, Number newValue)
+            {
+                if (!statusChoiceBox.isVisible()) return;
+                int tableNumber = Integer.parseInt(tableLabel.getText().split(" ")[1]);
+
+                tables[tableNumber].setStatus(newValue.intValue());
+
+                int x = (tableNumber - tableNumber % 6) / 6;
+                int y = tableNumber % 6;
+                String color = "";
+                switch (newValue.intValue()) {
+                    case 0:
+                        tables[tableNumber].clearOrders();
+                        updateTableStatus(tableNumber);
+                        seat1Button.setDisable(true);
+                        seat2Button.setDisable(true);
+                        seat3Button.setDisable(true);
+                        seat4Button.setDisable(true);
+                        color = "#00ff00";
+                        break;
+                    case 1:
+                        seat1Button.setDisable(false);
+                        seat2Button.setDisable(false);
+                        seat3Button.setDisable(false);
+                        seat4Button.setDisable(false);
+                        color = "#ffff00";
+                        break;
+                    case 2:
+                        tables[tableNumber].clearOrders();
+                        updateTableStatus(tableNumber);
+                        seat1Button.setDisable(true);
+                        seat2Button.setDisable(true);
+                        seat3Button.setDisable(true);
+                        seat4Button.setDisable(true);
+                        color = "#ff0000";
+                        break;
+                }
+                tableButtons[x][y].setStyle("-fx-background-color: " + color + "; -fx-border-color: #000000");
+            }
+        });
 
         // Order button control for seats
         seat1Button.setOnAction(new EventHandler<ActionEvent>() {
@@ -132,8 +185,9 @@ public class Main extends Application {
             }
         });
 
-        // Start program with table and seat panel hidden
+        // Start program with table and seat panel hidden and disabled
         tableLabel.setVisible(false);
+        statusChoiceBox.setVisible(false);
         seat1Label.setVisible(false);
         seat2Label.setVisible(false);
         seat3Label.setVisible(false);
@@ -142,8 +196,13 @@ public class Main extends Application {
         seat2Button.setVisible(false);
         seat3Button.setVisible(false);
         seat4Button.setVisible(false);
+        seat1Button.setDisable(true);
+        seat2Button.setDisable(true);
+        seat3Button.setDisable(true);
+        seat4Button.setDisable(true);
 
-        addOrderPane.add(tableLabel, 0, 0);
+        labelPane.getChildren().addAll(tableLabel, statusChoiceBox);
+        addOrderPane.add(labelPane, 0, 0);
         addOrderPane.add(seat1Label, 0, 1);
         addOrderPane.add(seat2Label, 0, 2);
         addOrderPane.add(seat3Label, 0, 3);
@@ -161,15 +220,32 @@ public class Main extends Application {
         mainPane.setVgap(10);
         addOrderPane.setHgap(10);
         addOrderPane.setVgap(10);
+        labelPane.setSpacing(5);
+        logoutPane.setSpacing(5);
         queuePane.setSpacing(2);
 
-        Line divider = new Line(0, 0, 0, 980);
-        mainPane.add(divider, 6, 0, 1, 6);
+        // Alignment fixes
+        logoutPane.setAlignment(Pos.CENTER_LEFT);
+        labelPane.setAlignment(Pos.CENTER_LEFT);
+
+        Separator separator = new Separator(Orientation.VERTICAL);
+        mainPane.add(separator, 6, 0, 1, 8);
 
         mainPane.add(queuePane, 7, 0, 1, 6);
+        Button logoutButton = new Button();
+        logoutButton.setText("Logout");
+        logoutButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                    primaryStage.close();
+                    Platform.exit();
+            }
+        });
+
+        logoutPane.getChildren().addAll(usernameLabel, logoutButton);
+
         Label queueLabel = new Label();
         queueLabel.setText("Order Queue:");
-        queuePane.getChildren().add(queueLabel);
+        queuePane.getChildren().addAll(logoutPane, queueLabel);
 
         // Start program at login screen
         primaryStage.setScene(new Scene(loginPane, 360, 100));
@@ -196,6 +272,7 @@ public class Main extends Application {
 
                     //If username and password are the same, login is set to valid
                     if (username.equals(login[0]) && password.equals(login[1])) {
+                        usernameLabel.setText("Current user: " + username);
                         return true;
                     }
                 }
@@ -337,6 +414,7 @@ public class Main extends Application {
             orders[i] = tables[number].getOrder(i);
 
         tableLabel.setText("Table " + number);
+        statusChoiceBox.setValue(statuses[tables[number].getStatus()]);
         seat1Label.setText("Seat 1 Order: " + (orders[0].size() > 0 ? orders[0] : ""));
         seat2Label.setText("Seat 2 Order: " + (orders[1].size() > 0 ? orders[1] : ""));
         seat3Label.setText("Seat 3 Order: " + (orders[2].size() > 0 ? orders[2] : ""));
@@ -371,7 +449,6 @@ public class Main extends Application {
      * @exception FileNotFoundException If the tables file is not found
      */
     public void assignTables() {
-
         // Create all tables as white and disabled
         int count = 0;
         for (int i = 0; i < 5; i++) {
@@ -409,6 +486,7 @@ public class Main extends Application {
                         public void handle(ActionEvent actionEvent) {
                             updateTableStatus(number);
                             tableLabel.setVisible(true);
+                            statusChoiceBox.setVisible(true);
                             seat1Label.setVisible(true);
                             seat2Label.setVisible(true);
                             seat3Label.setVisible(true);

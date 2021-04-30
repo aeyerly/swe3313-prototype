@@ -7,8 +7,6 @@ package prototype;
  */
 public class Table
 {
-
-
     private int number, status;
     private Order[] orders = new Order[4];
 
@@ -22,9 +20,7 @@ public class Table
         this.status = status;
 
         // Initialize the orders for each seat as empty
-        for (int i = 0; i < orders.length; i++) {
-            orders[i] = new Order();
-        }
+        clearOrders();
     }
 
     /**
@@ -58,6 +54,15 @@ public class Table
      */
     public void setStatus(int newStatus) {
         status = newStatus;
+    }
+
+    /**
+     * Clear all of the orders at the table.
+     */
+    public void clearOrders() {
+        for (int i = 0; i < orders.length; i++) {
+            orders[i] = new Order();
+        }
     }
 
     /**
