@@ -19,7 +19,17 @@ import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Main --- Main file which controls the UI.
+ * @author Alex Eyerly, Andrew Loveless
+ * @version 1.0
+ */
 public class Main extends Application {
+
+    // Initialize UI elements
+    GridPane loginPane = new GridPane();
+    GridPane mainPane = new GridPane();
+    VBox queuePane = new VBox();
 
     Label tableLabel = new Label();
     Label seat1Label = new Label();
@@ -31,17 +41,10 @@ public class Main extends Application {
     Button seat3Button = new Button();
     Button seat4Button = new Button();
 
-    GridPane loginPane = new GridPane();
-
-    GridPane mainPane = new GridPane();
-
-    VBox queuePane = new VBox();
-
-
     Button tableButtons[][] = new Button[5][6];
 
     Table[] tables = new Table[30];
-    private String username;
+    private String username; // Username of the user logged in
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -83,15 +86,12 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 username = userEntry.getText();
 
-                boolean validAttempt = signIn(username, passEntry.getText());
-
-                if(validAttempt) {
+                // Attempt login
+                if(signIn(username, passEntry.getText())) {
                     assignTables();
                     primaryStage.setScene(new Scene(mainPane, 1280, 980));
                     primaryStage.show();
-                }
-
-                else {
+                } else {
                     errorLabel.setText("Incorrect login");
                 }
             }
@@ -104,16 +104,12 @@ public class Main extends Application {
         addOrderPane.setLayoutX(640);
         addOrderPane.setLayoutY(320);
 
-        tableLabel.setText("Table");
-        seat1Label.setText("Seat 1 Order");
-        seat2Label.setText("Seat 2 Order");
-        seat3Label.setText("Seat 3 Order");
-        seat4Label.setText("Seat 4 Order");
         seat1Button.setText("Add");
         seat2Button.setText("Add");
         seat3Button.setText("Add");
         seat4Button.setText("Add");
 
+        // Order button control for seats
         seat1Button.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 addOrderButton(0, primaryStage);
@@ -136,6 +132,7 @@ public class Main extends Application {
             }
         });
 
+        // Start program with table and seat panel hidden
         tableLabel.setVisible(false);
         seat1Label.setVisible(false);
         seat2Label.setVisible(false);
@@ -155,70 +152,73 @@ public class Main extends Application {
         addOrderPane.add(seat2Button, 2, 2);
         addOrderPane.add(seat3Button, 2, 3);
         addOrderPane.add(seat4Button, 2, 4);
-
         mainPane.add(addOrderPane, 0, 6, 6, 1);
 
+        // Set spacing of UI elements
         loginPane.setVgap(5);
         loginPane.setHgap(5);
         mainPane.setHgap(10);
         mainPane.setVgap(10);
         addOrderPane.setHgap(10);
         addOrderPane.setVgap(10);
+        queuePane.setSpacing(2);
 
         Line divider = new Line(0, 0, 0, 980);
         mainPane.add(divider, 6, 0, 1, 6);
 
-        queuePane.setSpacing(2);
         mainPane.add(queuePane, 7, 0, 1, 6);
-
         Label queueLabel = new Label();
         queueLabel.setText("Order Queue:");
         queuePane.getChildren().add(queueLabel);
 
+        // Start program at login screen
         primaryStage.setScene(new Scene(loginPane, 360, 100));
         primaryStage.show();
     }
 
-    //Method to authenticate username and password
+    /**
+     * Attempt to sign in with given username and password.
+     * @param username The username to check
+     * @param password The password to check
+     * @exception FileNotFoundException If users file is not found
+     * @return Boolean if login was successful
+     */
     public boolean signIn(String username, String password) {
         try {
-            File userDB = new File("../../../src/prototype/users.csv");
-            Scanner scan = new Scanner(userDB);
+                File userDB = new File("../../../src/prototype/users.csv");
+                Scanner scan = new Scanner(userDB);
 
-            //Keeps track of if a login matches a stored value
-            boolean validLogin = false;
-            while (scan.hasNextLine()) {
+                //Keeps track of if a login matches a stored value
+                while (scan.hasNextLine()) {
+                    //Splits each line into username and password to compare with user input
+                    String data = scan.nextLine();
+                    String[] login = data.split(",");
 
-                //Splits each line into username and password to compare with user input
-                String data = scan.nextLine();
-                String[] login = data.split(",");
-
-                //If username and password are the same, login is set to valid
-                if (username.equals(login[0]) && password.equals(login[1])) {
-                    validLogin = true;
-                    break;
+                    //If username and password are the same, login is set to valid
+                    if (username.equals(login[0]) && password.equals(login[1])) {
+                        return true;
+                    }
                 }
-            }
-            if (validLogin) {
-                return true;
-            }
-            //Lets user know when the user or password is incorrect
-            else {
                 return false;
+            } catch (FileNotFoundException e) {
+                System.out.println("File was not found");
+                e.printStackTrace();
             }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File was not found");
-            e.printStackTrace();
-        }
-
         return false;
     }
 
+    /**
+     * Add to the order of the specified seat of the currently selected table,
+     * then put that order in the order queue.
+     * @param seat          The seat number (1-4) at the table
+     * @param primaryStage  The primary stage
+     */
     public void addOrderButton(int seat,  Stage primaryStage)
     {
         int tableNumber = Integer.parseInt(tableLabel.getText().split(" ")[1]);
-        tables[tableNumber].addToOrder(seat, takeOrder(primaryStage));
+        tables[tableNumber].addToOrder(seat, takeOrder(primaryStage)); //Take the order and add to table
+
+        // Create a button and add it to the order queue
         Order order = tables[tableNumber].getOrder(seat);
         Button orderButton = new Button(String.format("%s-%s: %s",
                  tableNumber, seat + 1, order.get(order.size() - 1)));
@@ -231,21 +231,26 @@ public class Main extends Application {
         updateTableStatus(tableNumber);
     }
 
+    /**
+     * Show a pop-up menu to select an item to add to the order.
+     * @param primaryStage  The primary stage
+     * @return The ID of the menu item selected
+     */
     public int takeOrder(Stage primaryStage) {
 
-        int[] id = new int[1];
+        int[] id = new int[1]; // Initialized as an array to avoid final variable errors
         Stage orderPopup = new Stage();
 
-        orderPopup.initModality(Modality.APPLICATION_MODAL);
+        orderPopup.initModality(Modality.APPLICATION_MODAL); // Identify the stage as a pop-up
         orderPopup.setTitle("Select item");
 
         GridPane menuPane = new GridPane();
-        menuPane.setVgap(2);
         VBox itemList = new VBox();
+        menuPane.setVgap(2);
         itemList.setSpacing(2);
 
         final ToggleGroup categoryGroup = new ToggleGroup();
-        ToggleGroup itemsGroup = new ToggleGroup();
+              ToggleGroup itemsGroup = new ToggleGroup();
 
         final String[] selectedValue = new String[1];
         ArrayList<String> categories = new ArrayList<String>();
@@ -267,6 +272,7 @@ public class Main extends Application {
         categoryLabel.setText("Categories:");
         menuPane.add(categoryLabel, 0, 0, 1, 1);
 
+        // Generate a list of the categories as radio buttons
         for (int i = 0; i < categories.size(); i ++) {
             RadioButton categoryButton = new RadioButton();
             categoryButton.setText(categories.get(i));
@@ -296,10 +302,10 @@ public class Main extends Application {
                     if (selected == null) return;
                     selectedValue[0] = selected.getText();
 
+                    // Find selected item in menu file
                     while (scan.hasNextLine()) {
                         String data = scan.nextLine();
                         String[] item = data.split(",");
-
                         if (item[2].equals(selectedValue[0])) {
                             id[0] = Integer.parseInt(item[0]);
                             break;
@@ -319,8 +325,13 @@ public class Main extends Application {
         return id[0];
     }
 
+    /**
+     * Update the UI with the correct table number and orders for the seats.
+     * @param number The number of the table being used to update the UI
+     */
     public void updateTableStatus(int number)
     {
+        // Get all the orders for the table
         Order[] orders = new Order[4];
         for (int i = 0; i < 4; i++)
             orders[i] = tables[number].getOrder(i);
@@ -332,26 +343,36 @@ public class Main extends Application {
         seat4Label.setText("Seat 4 Order: " + (orders[3].size() > 0 ? orders[3] : ""));
     }
 
+    /**
+     * Update the menu pop-up to display the items for the currently selected category.
+     * @param itemsGroup    The group of radio buttons used in the pop-up
+     * @param selected      The name of the selected category
+     * @param itemList      The VBox in which the items group is contained in
+     */
     public void updateCategoryList(ToggleGroup itemsGroup, String selected, VBox itemList) {
-
         try {
-            File menu = new File("../../../src/prototype/menu.csv");
-            Scanner scan = new Scanner(menu);
-            while (scan.hasNextLine()) {
-                String[] data = scan.nextLine().split(",");
-                if (data[1].equals(selected)) {
-                    RadioButton temp = new RadioButton(data[2]);
-                    temp.setToggleGroup(itemsGroup);
-                    itemList.getChildren().add(temp);
+                File menu = new File("../../../src/prototype/menu.csv");
+                Scanner scan = new Scanner(menu);
+                while (scan.hasNextLine()) {
+                    String[] data = scan.nextLine().split(",");
+                    if (data[1].equals(selected)) {
+                        RadioButton temp = new RadioButton(data[2]);
+                        temp.setToggleGroup(itemsGroup);
+                        itemList.getChildren().add(temp);
+                    }
                 }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
+    /**
+     * Creates the UI elements for the tables and enables the correct tables for the logged in user.
+     * @exception FileNotFoundException If the tables file is not found
+     */
     public void assignTables() {
 
+        // Create all tables as white and disabled
         int count = 0;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
@@ -374,6 +395,7 @@ public class Main extends Application {
             while (scan.hasNextLine()) {
                 String data = scan.nextLine();
                 String[] assignment = data.split(",");
+                // Enable and color all tables assigned to the current user
                 if (assignment[0].equals(username)) {
                     int x = Integer.parseInt(assignment[1]);
                     int y = Integer.parseInt(assignment[2]);
@@ -382,6 +404,7 @@ public class Main extends Application {
                     tableButtons[x][y]
                             .setDisable(false);
                     int number = x * 6 + y;
+                    // When a table is clicked, show the table information panel if not already showing
                     tableButtons[x][y].setOnAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent actionEvent) {
                             updateTableStatus(number);
