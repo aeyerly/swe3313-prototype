@@ -31,11 +31,12 @@ public class Main extends Application {
     Button seat3Button = new Button();
     Button seat4Button = new Button();
 
-    //Login screen root
     GridPane loginPane = new GridPane();
 
-    //Main application root
     GridPane mainPane = new GridPane();
+
+    VBox queuePane = new VBox();
+
 
     Button tableButtons[][] = new Button[5][6];
 
@@ -49,8 +50,6 @@ public class Main extends Application {
             tables[i] = new Table(i, 0);
 
         primaryStage.setTitle("J's Corner Restaurant Prototype");
-
-
 
         loginPane.setPadding(new Insets(10, 10, 10, 10));
 
@@ -166,13 +165,17 @@ public class Main extends Application {
         addOrderPane.setHgap(10);
         addOrderPane.setVgap(10);
 
-        Line divider = new Line(0, 0, 0, 960);
+        Line divider = new Line(0, 0, 0, 980);
         mainPane.add(divider, 6, 0, 1, 6);
 
+        queuePane.setSpacing(2);
+        mainPane.add(queuePane, 7, 0, 1, 6);
 
+        Label queueLabel = new Label();
+        queueLabel.setText("Order Queue:");
+        queuePane.getChildren().add(queueLabel);
 
         primaryStage.setScene(new Scene(loginPane, 360, 100));
-        //primaryStage.setScene(new Scene(mainPane, 1280, 960));
         primaryStage.show();
     }
 
@@ -215,13 +218,22 @@ public class Main extends Application {
     public void addOrderButton(int seat,  Stage primaryStage)
     {
         int tableNumber = Integer.parseInt(tableLabel.getText().split(" ")[1]);
-        tables[tableNumber].setOrder(seat, takeOrder(primaryStage));
+        tables[tableNumber].addToOrder(seat, takeOrder(primaryStage));
+        Order order = tables[tableNumber].getOrder(seat);
+        Button orderButton = new Button(String.format("%s-%s: %s",
+                 tableNumber, seat + 1, order.get(order.size() - 1)));
+        orderButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                queuePane.getChildren().remove(orderButton);
+            }
+        });
+        queuePane.getChildren().add(orderButton);
         updateTableStatus(tableNumber);
     }
 
-    public Order takeOrder(Stage primaryStage) {
+    public int takeOrder(Stage primaryStage) {
 
-        Order order = new Order();
+        int[] id = new int[1];
         Stage orderPopup = new Stage();
 
         orderPopup.initModality(Modality.APPLICATION_MODAL);
@@ -233,6 +245,8 @@ public class Main extends Application {
         itemList.setSpacing(2);
 
         final ToggleGroup categoryGroup = new ToggleGroup();
+        ToggleGroup itemsGroup = new ToggleGroup();
+
         final String[] selectedValue = new String[1];
         ArrayList<String> categories = new ArrayList<String>();
 
@@ -262,7 +276,7 @@ public class Main extends Application {
                     RadioButton selected = (RadioButton) categoryGroup.getSelectedToggle();
                     selectedValue[0] = selected.getText();
                     itemList.getChildren().clear();
-                    updateCategoryList(selectedValue[0], itemList);
+                    updateCategoryList(itemsGroup, selectedValue[0], itemList);
                 }
             });
             menuPane.add(categoryButton, 0, i + 1, 1, 1);
@@ -274,25 +288,26 @@ public class Main extends Application {
         confirm.setText("Confirm");
         confirm.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-
-                /*try {
+                try {
                     File menuDB = new File("../../../src/prototype/menu.csv");
                     Scanner scan = new Scanner(menuDB);
 
-                    int line = 1;
+                    RadioButton selected = (RadioButton) itemsGroup.getSelectedToggle();
+                    if (selected == null) return;
+                    selectedValue[0] = selected.getText();
+
                     while (scan.hasNextLine()) {
                         String data = scan.nextLine();
-                        if (line.contains()) {
-                            String[] item = data.split(",");
-                            id = item[0];
+                        String[] item = data.split(",");
+
+                        if (item[2].equals(selectedValue[0])) {
+                            id[0] = Integer.parseInt(item[0]);
                             break;
-                        } else line++;
+                        }
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }*/
-
-                order.addItem(14);
+                }
                 orderPopup.close();
             }
         });
@@ -301,7 +316,7 @@ public class Main extends Application {
         //Take the order
         orderPopup.setScene(new Scene(menuPane, 510, 400));
         orderPopup.showAndWait();
-        return order;
+        return id[0];
     }
 
     public void updateTableStatus(int number)
@@ -311,23 +326,22 @@ public class Main extends Application {
             orders[i] = tables[number].getOrder(i);
 
         tableLabel.setText("Table " + number);
-        seat1Label.setText("Seat 1 Order: " + (orders[0] != null ? orders[0] : ""));
-        seat2Label.setText("Seat 2 Order: " + (orders[1] != null ? orders[1] : ""));
-        seat3Label.setText("Seat 3 Order: " + (orders[2] != null ? orders[2] : ""));
-        seat4Label.setText("Seat 4 Order: " + (orders[3] != null ? orders[3] : ""));
+        seat1Label.setText("Seat 1 Order: " + (orders[0].size() > 0 ? orders[0] : ""));
+        seat2Label.setText("Seat 2 Order: " + (orders[1].size() > 0 ? orders[1] : ""));
+        seat3Label.setText("Seat 3 Order: " + (orders[2].size() > 0 ? orders[2] : ""));
+        seat4Label.setText("Seat 4 Order: " + (orders[3].size() > 0 ? orders[3] : ""));
     }
 
-    public void updateCategoryList(String selected, VBox itemList) {
-        ToggleGroup items = new ToggleGroup();
-        
+    public void updateCategoryList(ToggleGroup itemsGroup, String selected, VBox itemList) {
+
         try {
             File menu = new File("../../../src/prototype/menu.csv");
             Scanner scan = new Scanner(menu);
             while (scan.hasNextLine()) {
                 String[] data = scan.nextLine().split(",");
                 if (data[1].equals(selected)) {
-                    RadioButton temp = new RadioButton(data[2] + " ($" + data[3] + ")");
-                    temp.setToggleGroup(items);
+                    RadioButton temp = new RadioButton(data[2]);
+                    temp.setToggleGroup(itemsGroup);
                     itemList.getChildren().add(temp);
                 }
             }

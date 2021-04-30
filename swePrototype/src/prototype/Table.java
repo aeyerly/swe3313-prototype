@@ -10,6 +10,10 @@ public class Table
     public Table(int number, int status) {
         this.number = number;
         this.status = status;
+
+        for (int i = 0; i < orders.length; i++) {
+            orders[i] = new Order();
+        }
     }
 
     public int getStatus() {
@@ -27,6 +31,12 @@ public class Table
     public void setStatus(int newStatus) {
 
         status = newStatus;
+    }
+
+    public void addToOrder(int seat, int item) {
+        Order order = getOrder(seat);
+        order.addItem(item);
+        setOrder(seat, order);
     }
 
     public void setNumber(int newNumber) {

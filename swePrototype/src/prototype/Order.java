@@ -5,11 +5,14 @@ import java.util.ArrayList;
 public class Order
 {
     private ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-    private int total;
-    private static int id;
 
     public Order() {
-        ++id;
+        this.items = items;
+    }
+
+    public Order(int id) {
+        this.items = items;
+        addItem(id);
     }
 
     public ArrayList<MenuItem> getItems() {
@@ -17,7 +20,7 @@ public class Order
     }
 
     public int getTotal() {
-        total = 0;
+        int total = 0;
         for (MenuItem item : items)
         {
             total += item.getCost();
@@ -25,20 +28,27 @@ public class Order
         return total;
     }
 
-    public int getId() {
-        return id;
+    public void addItem(int id) {
+        items.add(new MenuItem(id));
     }
 
-    public void addItem(int id) {
+    public String get(int index)
+    {
+        return items.get(index).getName();
+    }
 
-        items.add(new MenuItem(id));
+    public int size()
+    {
+        return items.size();
     }
 
     @Override
     public String toString() {
-        String output = "";
-        for(MenuItem item : items)
-            output += item.getName() + " ";
+        String output = "($" + getTotal() + ") ";
+        for (int i = 0; i < items.size(); i++){
+            output += items.get(i).getName();
+            if (i < items.size() - 1) output += ", ";
+        }
         return output;
     }
 }
