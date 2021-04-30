@@ -61,8 +61,7 @@ public class Order
      * @param index The index of the menu item to check
      * @return The name of the menu item at the index
      */
-    public String get(int index)
-    {
+    public String get(int index) {
         return items.get(index).getName();
     }
 
@@ -70,8 +69,7 @@ public class Order
      * Return the number of items on the order.
      * @return The number of items on the order
      */
-    public int size()
-    {
+    public int size() {
         return items.size();
     }
 
