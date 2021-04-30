@@ -2,7 +2,7 @@
 2,Appetizers,Buffalo Blue Chips,6.00
 3,Appetizers,Chicken Nachos,8.50
 4,Appetizers,Pork Nachos,8.50
-5,Appetizers,Pork or Chicken Sliders (3),5.00
+5,Appetizers,Chicken Sliders,5.00
 6,Appetizers,Catfish Bites,6.50
 7,Appetizers,Fried Veggies,6.50
 8,Appetizers,Fried Cheese,7.50
@@ -25,19 +25,19 @@
 25,J's Favorites,Captain Crunch Chicken Tenders,11.50
 26,J's Favorites,Shock Top Grouper Fingers,11.50
 27,J's Favorites,Mac & Cheese Bar,8.50
-28,Sides,Curly Fries,0.00
-29,Sides,Wing Chips,0.00
-30,Sides,Sweet Potato Fries,1.50
-31,Sides,Creamy Cabbage Slaw,0.00
-32,Sides,Adluh Cheese Grits,0.00
-33,Sides,Mashed Potatoes,0.00
-34,Sides,Mac & Cheese,0.00
-35,Sides,Spicy Mac & Cheese,0.00
-36,Sides,Bacon Mac & Cheese,0.00
-37,Sides,Broccoli,0.00
-38,Sides,Seasonal Vegetables,0.00
-39,Sides,Baked Beans,0.00
-40,Sides,Fried Okra,1.50
+28,Sides,Curly Fries,2.50
+29,Sides,Wing Chips,2.50
+30,Sides,Sweet Potato Fries,4.00
+31,Sides,Creamy Cabbage Slaw,2.50
+32,Sides,Adluh Cheese Grits,2.50
+33,Sides,Mashed Potatoes,2.50
+34,Sides,Mac & Cheese,2.50
+35,Sides,Spicy Mac & Cheese,2.50
+36,Sides,Bacon Mac & Cheese,2.50
+37,Sides,Broccoli,2.50
+38,Sides,Seasonal Vegetables,2.50
+39,Sides,Baked Beans,2.50
+40,Sides,Fried Okra,4.00
 41,Sandwiches,Grilled Cheese,5.50
 42,Sandwiches,100% Beef Hot Dog,5.50
 43,Sandwiches,Chicken BLT&A,10.00
@@ -55,8 +55,8 @@
 55,Burgers,Bacon Cheeseburger,11.00
 56,Burgers,Mushroom Swiss Burger,11.00
 57,Burgers,Carolina Burger,11.00
-58,Burgers,Portobello Burger (V),8.50
-59,Burgers,Vegan Boca Burger (V),10.50
+58,Burgers,Portobello Burger,8.50
+59,Burgers,Vegan Boca Burger,10.50
 60,Beverages,Coffee,2.00
 61,Beverages,Sweet Tea,2.00
 62,Beverages,Unsweet Tea,2.00
@@ -65,7 +65,7 @@
 65,Beverages,Sprite,2.00
 66,Beverages,Mr. Pibb,2.00
 67,Beverages,Ginger Ale,2.00
-68,Beverages,Barq's Root Beer (Can),2.00
+68,Beverages,Barq's Root Beer,2.00
 69,Beverages,Bottled Water,2.00
 70,Beverages,Lemonade,2.00
 71,Beverages,Milk,2.00

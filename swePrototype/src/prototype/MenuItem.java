@@ -10,8 +10,7 @@ public class MenuItem
     private double cost;
     private String name, category;
 
-    public MenuItem(int id)
-    {
+    public MenuItem(int id) {
         lookupInfo(id);
     }
 
